@@ -1,0 +1,45 @@
+{
+	"name": "nanoleaf",
+	"version": "0.0.0",
+	"description": "A script to control nanoleaf lights",
+	"type": "module",
+	"exports": {
+		".": "./main.js"
+	},
+	"files": [
+		"main.js"
+	],
+	"main": "main.js",
+	"scripts": {
+		"env:local": "op read op://Local/nanoleaf/ENV_FILE > .env",
+		"prettier:check": "prettier --check .",
+		"prettier:write": "prettier --write .",
+		"start": "node main.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/hedia-team/nanoleaf.git"
+	},
+	"keywords": [
+		"nanoleaf"
+	],
+	"author": "jonatan@hedia.com",
+	"license": "UNLICENSED",
+	"bugs": {
+		"url": "https://github.com/hedia-team/nanoleaf/issues"
+	},
+	"homepage": "https://github.com/hedia-team/nanoleaf#readme",
+	"engines": {
+		"node": ">=20",
+		"npm": ">=10"
+	},
+	"dependencies": {
+		"@hedia/env": "2.3.1"
+	},
+	"devDependencies": {
+		"@hedia/prettier-config": "1.0.6",
+		"prettier": "3.3.2"
+	},
+	"prettier": "@hedia/prettier-config"
+}
