@@ -12,6 +12,8 @@
 	"main": "main.js",
 	"scripts": {
 		"env:local": "op read op://Local/nanoleaf/ENV_FILE > .env",
+		"eslint:fix": "eslint . --fix",
+		"eslint": "eslint .",
 		"prettier:check": "prettier --check .",
 		"prettier:write": "prettier --write .",
 		"start": "node main.js",
@@ -38,7 +40,11 @@
 		"@hedia/env": "2.3.1"
 	},
 	"devDependencies": {
+		"@hedia/eslint-config": "4.0.2",
 		"@hedia/prettier-config": "1.0.6",
+		"@typescript-eslint/eslint-plugin": "7.13.0",
+		"@typescript-eslint/parser": "7.13.0",
+		"eslint-config-prettier": "9.1.0",
 		"prettier": "3.3.2"
 	},
 	"prettier": "@hedia/prettier-config"
