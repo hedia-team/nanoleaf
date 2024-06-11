@@ -34,6 +34,7 @@ async function main() {
 		},
 	};
 
+	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		try {
 			const eventStream = fetchEventStream("https://scalingo.hedia.org/counters");
@@ -134,30 +135,6 @@ function getColor(count) {
 	}
 }
 
-async function discover() {
-	console.log("discover");
-
-	const ips = new Array(255).fill(null).map((i, index) => `192.168.1.${index + 1}`);
-
-	await Promise.all(ips.map(checkIp));
-
-	async function checkIp(ip) {
-		const url = `http://${ip}/api/v1/new`;
-
-		try {
-			const response = await fetch(url, { method: "POST" });
-
-			if (!response.ok) {
-				throw new Error(response.status);
-			}
-
-			console.log(url, response.status);
-		} catch (err) {
-			console.error(url, err.message);
-		}
-	}
-}
-
 async function setPanelColor(panelId, [red, green, blue], nanoleafBaseUrl, nanoleafAuthToken) {
 	console.log("setPanelColor");
 
@@ -172,32 +149,6 @@ async function setPanelColor(panelId, [red, green, blue], nanoleafBaseUrl, nanol
 		nanoleafBaseUrl,
 		nanoleafAuthToken,
 	);
-}
-
-async function getnanoleafAuthToken(nanoleafBaseUrl) {
-	const input = new URL("/api/v1/new", nanoleafBaseUrl);
-
-	const response = await fetch(nanoleafBaseUrl, { method: "POST" });
-
-	console.log(response.status, await response.json());
-}
-
-async function identify(nanoleafBaseUrl, nanoleafAuthToken) {
-	console.log("identify");
-
-	const input = new URL(`/api/v1/${nanoleafAuthToken}/identify`, nanoleafBaseUrl);
-
-	await fetch(input, { method: "PUT" });
-}
-
-async function getAllPanelInfo(nanoleafBaseUrl, nanoleafAuthToken) {
-	console.log("getAllPanelInfo");
-
-	const input = new URL(`/api/v1/${nanoleafAuthToken}/`, nanoleafBaseUrl);
-
-	const response = await fetch(input, { method: "GET" });
-
-	return response.json();
 }
 
 async function writeEffect(effect, nanoleafBaseUrl, nanoleafAuthToken) {
@@ -220,8 +171,4 @@ async function writeEffect(effect, nanoleafBaseUrl, nanoleafAuthToken) {
 
 async function sleep(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function getRandomItem(array) {
-	return array[Math.floor(Math.random() * array.length)];
 }
