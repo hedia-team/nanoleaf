@@ -1,5 +1,8 @@
 import { Env, loadEnv } from "@hedia/env";
 
+const BLUE = [51, 51, 255];
+const PINK = [255, 51, 153];
+
 main().catch((err) => console.error(err));
 
 async function main() {
@@ -11,62 +14,73 @@ async function main() {
 		"hedia-com-oauth2": {
 			panelId: 51890,
 			count: 0,
+			color: BLUE,
 		},
 		"hedia-com-developer": {
 			panelId: 34924,
 			count: 0,
+			color: BLUE,
 		},
 		"hedia-com-id": {
 			panelId: 26826,
 			count: 0,
+			color: BLUE,
 		},
 		"hedia-com-data": {
 			panelId: 50223,
 			count: 0,
+			color: BLUE,
 		},
 		"hedia-com-event": {
 			panelId: 61943,
 			count: 0,
+			color: BLUE,
 		},
 		"hedia-com-webhook": {
 			panelId: 62639,
 			count: 0,
+			color: BLUE,
 		},
 	};
 
-	setInterval(async () => {
-		try {
-			const eventStream = fetchEventStream("https://scalingo.hedia.org/counters");
+	try {
+		const eventStream = fetchEventStream("https://scalingo.hedia.org/counters");
 
-			for await (const event of eventStream) {
-				try {
-					const counters = JSON.parse(event.data);
+		for await (const event of eventStream) {
+			try {
+				const counters = JSON.parse(event.data);
 
-					for (const appname in apps) {
-						const app = apps[appname];
-						const newCount = counters?.app?.[appname]?.count ?? 0;
-						const diff = newCount - app.count;
+				for (const appname in apps) {
+					const app = apps[appname];
+					const newCount = counters?.app?.[appname]?.count ?? 0;
+					const diff = newCount - app.count;
+
+					if (diff > 0) {
+						console.log(`\nApp ${appname} was ${app.count}, now ${newCount}`);
 						app.count = newCount;
-						const color = getColor(diff);
+					}
 
-						if (diff > 0) {
-							console.log(appname, diff, color);
-						}
-
+					const color = getColor(diff);
+					if (color !== app.color) {
+						console.log(`Setting ${appname} color to ${color}`);
 						try {
 							await setPanelColor(app.panelId, color, nanoleafBaseUrl, nanoleafAuthToken);
+							app.color = color;
 						} catch (err) {
-							console.error("ERROR SETTING PANEL COLOR", err);
+							console.error("Error setting panel color:", err);
+							sleep(1000);
 						}
 					}
-				} catch (err) {
-					console.error("ERROR PARSING DATA", err);
 				}
+			} catch (err) {
+				console.error("Error parsing event data:", err);
+				sleep(1000);
 			}
-		} catch (err) {
-			console.error("ERROR FETCHING COUNTERS", err);
 		}
-	}, 1000);
+	} catch (err) {
+		console.error("Error fetching event stream:", err);
+		sleep(1000);
+	}
 }
 
 async function* fetchEventStream(url) {
@@ -124,9 +138,9 @@ async function* fetchEventStream(url) {
 
 function getColor(count) {
 	if (count === 0) {
-		return [51, 51, 255]; // blue
+		return BLUE;
 	} else {
-		return [255, 51, 153]; // pink
+		return PINK;
 	}
 }
 
@@ -138,6 +152,10 @@ async function setPanelColor(panelId, [red, green, blue], nanoleafBaseUrl, nanol
 			animData: `1 ${panelId} 1 ${red} ${green} ${blue} 0 0`,
 			loop: false,
 			palette: [],
+			transTime: {
+				minValue: 50,
+				maxValue: 100,
+			},
 		},
 		nanoleafBaseUrl,
 		nanoleafAuthToken,
@@ -156,4 +174,8 @@ async function writeEffect(effect, nanoleafBaseUrl, nanoleafAuthToken) {
 			write: effect,
 		}),
 	});
+}
+
+async function sleep(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
 }
