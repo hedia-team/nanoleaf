@@ -4,3 +4,4 @@ dist/
 bin/
 .env
 coverage.xml
+.npmrc
