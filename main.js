@@ -34,8 +34,7 @@ async function main() {
 		},
 	};
 
-	// eslint-disable-next-line no-constant-condition
-	while (true) {
+	setInterval(async () => {
 		try {
 			const eventStream = fetchEventStream("https://scalingo.hedia.org/counters");
 
@@ -45,33 +44,29 @@ async function main() {
 
 					for (const appname in apps) {
 						const app = apps[appname];
-
 						const newCount = counters?.app?.[appname]?.count ?? 0;
-
 						const diff = newCount - app.count;
-
 						app.count = newCount;
-
 						const color = getColor(diff);
 
 						if (diff > 0) {
 							console.log(appname, diff, color);
 						}
 
-						await setPanelColor(app.panelId, color, nanoleafBaseUrl, nanoleafAuthToken);
+						try {
+							await setPanelColor(app.panelId, color, nanoleafBaseUrl, nanoleafAuthToken);
+						} catch (err) {
+							console.error("ERROR SETTING PANEL COLOR", err);
+						}
 					}
 				} catch (err) {
-					console.error(err);
-
-					await sleep(1000);
+					console.error("ERROR PARSING DATA", err);
 				}
 			}
 		} catch (err) {
-			console.error(err);
-
-			await sleep(1000);
+			console.error("ERROR FETCHING COUNTERS", err);
 		}
-	}
+	}, 1000);
 }
 
 async function* fetchEventStream(url) {
@@ -129,15 +124,13 @@ async function* fetchEventStream(url) {
 
 function getColor(count) {
 	if (count === 0) {
-		return [51, 51, 255];
+		return [51, 51, 255]; // blue
 	} else {
-		return [255, 51, 153];
+		return [255, 51, 153]; // pink
 	}
 }
 
 async function setPanelColor(panelId, [red, green, blue], nanoleafBaseUrl, nanoleafAuthToken) {
-	console.log("setPanelColor");
-
 	await writeEffect(
 		{
 			command: "display",
@@ -152,11 +145,9 @@ async function setPanelColor(panelId, [red, green, blue], nanoleafBaseUrl, nanol
 }
 
 async function writeEffect(effect, nanoleafBaseUrl, nanoleafAuthToken) {
-	console.log("writeEffect");
-
 	const input = new URL(`/api/v1/${nanoleafAuthToken}/effects`, nanoleafBaseUrl);
 
-	const response = await fetch(input, {
+	await fetch(input, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
@@ -165,10 +156,4 @@ async function writeEffect(effect, nanoleafBaseUrl, nanoleafAuthToken) {
 			write: effect,
 		}),
 	});
-
-	console.log(await response.status);
-}
-
-async function sleep(ms) {
-	return new Promise((resolve) => setTimeout(resolve, ms));
 }
