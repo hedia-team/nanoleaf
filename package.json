@@ -2,39 +2,35 @@
 	"name": "nanoleaf",
 	"version": "0.0.0",
 	"description": "A script to control nanoleaf lights",
-	"type": "module",
-	"exports": {
-		".": "./main.js"
+	"keywords": [
+		"nanoleaf"
+	],
+	"homepage": "https://github.com/hedia-team/nanoleaf#readme",
+	"bugs": {
+		"url": "https://github.com/hedia-team/nanoleaf/issues"
 	},
+	"license": "UNLICENSED",
+	"author": "jonatan@hedia.com",
 	"files": [
 		"main.js"
 	],
-	"main": "main.js",
-	"scripts": {
-		"env:local": "op read op://Local/nanoleaf/ENV_FILE > .env",
-		"eslint:fix": "eslint . --fix",
-		"eslint": "eslint .",
-		"prettier:check": "prettier --check .",
-		"prettier:write": "prettier --write .",
-		"start": "node main.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+	"exports": {
+		".": "./main.js"
 	},
+	"main": "main.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/hedia-team/nanoleaf.git"
 	},
-	"keywords": [
-		"nanoleaf"
-	],
-	"author": "jonatan@hedia.com",
-	"license": "UNLICENSED",
-	"bugs": {
-		"url": "https://github.com/hedia-team/nanoleaf/issues"
-	},
-	"homepage": "https://github.com/hedia-team/nanoleaf#readme",
-	"engines": {
-		"node": ">=20",
-		"npm": ">=10"
+	"type": "module",
+	"scripts": {
+		"env:local": "op read op://Local/nanoleaf/ENV_FILE > .env",
+		"eslint": "eslint .",
+		"eslint:fix": "eslint . --fix",
+		"prettier:check": "prettier --check .",
+		"prettier:write": "prettier --write .",
+		"start": "node main.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
 		"@hedia/env": "2.3.1"
@@ -46,6 +42,10 @@
 		"@typescript-eslint/parser": "7.13.0",
 		"eslint-config-prettier": "9.1.0",
 		"prettier": "3.3.2"
+	},
+	"engines": {
+		"node": ">=20",
+		"npm": ">=10"
 	},
 	"prettier": "@hedia/prettier-config"
 }
