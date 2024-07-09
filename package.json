@@ -27,6 +27,7 @@
 		"env:local": "op read op://Local/nanoleaf/ENV_FILE > .env",
 		"eslint": "eslint .",
 		"eslint:fix": "eslint . --fix",
+		"package:lint": "npx npm-package-json-lint .",
 		"prettier:check": "prettier --check .",
 		"prettier:write": "prettier --write .",
 		"start": "node main.js",
