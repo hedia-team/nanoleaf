@@ -34,12 +34,12 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
-		"@hedia/env": "^2.3.1"
+		"@hedia/env": "^2.5.1"
 	},
 	"devDependencies": {
-		"@hedia/eslint-config": "4.0.3",
-		"@hedia/package-lint": "1.1.1",
-		"@hedia/prettier-config": "1.0.7",
+		"@hedia/eslint-config": "5.1.0",
+		"@hedia/package-lint": "1.2.2",
+		"@hedia/prettier-config": "1.2.2",
 		"eslint-config-prettier": "9.1.0"
 	},
 	"engines": {
