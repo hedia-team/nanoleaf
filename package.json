@@ -24,22 +24,24 @@
 	},
 	"type": "module",
 	"scripts": {
+		"build": "echo \"Nothing to build.\"",
 		"env:local": "op read op://Local/nanoleaf/ENV_FILE > .env",
 		"eslint": "eslint .",
 		"eslint:fix": "eslint . --fix",
 		"package:lint": "npx npm-package-json-lint .",
 		"prettier:check": "prettier --check .",
 		"prettier:write": "prettier --write .",
+		"robots": "npm run eslint:fix && npm run prettier:write && npm run package:lint",
 		"start": "node main.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"There are no tests.\""
 	},
 	"dependencies": {
-		"@hedia/env": "^2.5.1"
+		"@hedia/env": "^2.5.2"
 	},
 	"devDependencies": {
-		"@hedia/eslint-config": "5.1.0",
-		"@hedia/package-lint": "1.2.2",
-		"@hedia/prettier-config": "1.2.2",
+		"@hedia/eslint-config": "5.1.2",
+		"@hedia/package-lint": "1.2.3",
+		"@hedia/prettier-config": "1.2.3",
 		"eslint-config-prettier": "9.1.0"
 	},
 	"engines": {
