@@ -24,6 +24,7 @@
 	},
 	"type": "module",
 	"scripts": {
+		"build": "echo \"Nothing to build.\"",
 		"env:local": "op read op://Local/nanoleaf/ENV_FILE > .env",
 		"eslint": "eslint .",
 		"eslint:fix": "eslint . --fix",
